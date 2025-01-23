@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import map from 'lodash/map';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchBlogs } from '../../actions';
 
-class BlogList extends Component {
-  componentDidMount() {
-    this.props.fetchBlogs();
-  }
+function BlogList() {
+  const dispatch = useDispatch();
+  const blogs = useSelector(state => state.blogs);
 
-  renderBlogs() {
-    return map(this.props.blogs, blog => {
+  useEffect(() => {
+    dispatch(fetchBlogs());
+  }, [dispatch]);
+
+  const renderBlogs = () => {
+    return map(blogs, blog => {
       return (
         <div className="card darken-1 horizontal" key={blog._id}>
           <div className="card-stacked">
@@ -25,15 +28,9 @@ class BlogList extends Component {
         </div>
       );
     });
-  }
+  };
 
-  render() {
-    return <div>{this.renderBlogs()}</div>;
-  }
+  return <div>{renderBlogs()}</div>;
 }
 
-function mapStateToProps({ blogs }) {
-  return { blogs };
-}
-
-export default connect(mapStateToProps, { fetchBlogs })(BlogList);
+export default BlogList;
