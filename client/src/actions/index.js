@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { FETCH_USER, FETCH_BLOGS, FETCH_BLOG } from './types';
 
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+
 export const fetchUser = () => async dispatch => {
   try {
     const res = await axios.get('/api/current_user');
@@ -32,13 +35,22 @@ export const submitBlog = (values, navigate) => async dispatch => {
 };
 
 export const fetchBlogs = () => async dispatch => {
-  const res = await axios.get('/api/blogs');
-
-  dispatch({ type: FETCH_BLOGS, payload: res.data });
+  try {
+    const res = await axios.get('/api/blogs');  // Changed to relative path
+    console.log('Blogs fetched:', res.data);
+    dispatch({ type: FETCH_BLOGS, payload: res.data });
+  } catch (error) {
+    console.error('Error fetching blogs:', error);
+    dispatch({ type: FETCH_BLOGS, payload: [] });
+  }
 };
 
 export const fetchBlog = id => async dispatch => {
-  const res = await axios.get(`/api/blogs/${id}`);
-
-  dispatch({ type: FETCH_BLOG, payload: res.data });
+  try {
+    const res = await axios.get(`/api/blogs/${id}`);
+    dispatch({ type: FETCH_BLOG, payload: res.data });
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    dispatch({ type: FETCH_BLOG, payload: null });
+  }
 };
