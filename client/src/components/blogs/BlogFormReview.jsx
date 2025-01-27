@@ -13,7 +13,7 @@ function BlogFormReview({ onCancel, formData }) {
   const renderFields = () => {
     return _.map(formFields, ({ name, label }) => {
       return (
-        <div key={name}>
+        <div key={name} className="form-review-field">
           <label>{label}</label>
           <div>{formData[name]}</div>
         </div>
@@ -21,34 +21,37 @@ function BlogFormReview({ onCancel, formData }) {
     });
   };
 
-  const renderButtons = () => {
-    return (
-      <div>
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log('Submitting blog with data:', formData);
+    try {
+      await dispatch(actions.submitBlog(formData, navigate));
+      // Navigation will be handled by the action creator
+    } catch (error) {
+      console.error('Error submitting blog:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h5>Please confirm your entries</h5>
+      {renderFields()}
+      <div className="buttons-container">
         <button
           className="yellow darken-3 white-text btn-flat"
           onClick={onCancel}
         >
           Back
         </button>
-        <button className="green btn-flat right white-text" onClick={handleSubmit}>
+        <button 
+          className="green btn-flat right white-text"
+          onClick={handleSubmit}
+        >
           Save Blog
           <i className="material-icons right">email</i>
         </button>
       </div>
-    );
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(actions.submitBlog(formData, navigate));
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h5>Please confirm your entries</h5>
-      {renderFields()}
-      {renderButtons()}
-    </form>
+    </div>
   );
 }
 

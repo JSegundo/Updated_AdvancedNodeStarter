@@ -8,7 +8,7 @@ const Dashboard = () => {
       <BlogList />
       <div className="fixed-action-btn">
         <Link to="/blogs/new" className="btn-floating btn-large red">
-          <i className="material-icons">add</i>
+          <i className="material-icons">add new blogpost</i> 
         </Link>
       </div>
     </div>

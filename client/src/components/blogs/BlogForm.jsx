@@ -1,32 +1,34 @@
 // BlogForm shows a form for a user to add input
-import _ from 'lodash';
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import BlogField from './BlogField';
+import { useForm } from 'react-hook-form';
+import _ from 'lodash';
 import formFields from './formFields';
-import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 
-function BlogForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const dispatch = useDispatch()
+function BlogForm({ onBlogSubmit }) {
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    // Your submit logic here
-    // dispatch(createBlog(data))
-  }
+  const onSubmit = (formData) => {
+    // Call the callback passed from BlogNew with the form data
+    onBlogSubmit(formData);
+  };
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {_.map(formFields, ({ label, name }) => {
           return (
-            <div key={name}>
+            <div key={name} className="input-field">
               <input
                 {...register(name, { required: `${label} is required` })}
                 placeholder={label}
+                className={errors[name] ? 'invalid' : ''}
               />
-              {errors[name] && <span>{errors[name].message}</span>}
+              {errors[name] && (
+                <span className="helper-text red-text">
+                  {errors[name].message}
+                </span>
+              )}
             </div>
           );
         })}

@@ -1,16 +1,44 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-class Header extends Component {
-  renderContent() {
-    switch (this.props.auth) {
+const Header = () => {
+  const auth = useSelector(state => state.auth);
+  console.log(auth);
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/auth/logout', {
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        window.location.href = 'http://localhost:3000';
+      } else {
+        console.error('Logout failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const renderContent = () => {
+    switch (auth) {
       case null:
-        return;
+        return null; // Show loading state or spinner
       case false:
         return (
           <li>
-            <a href={'/auth/google'}>Login With Google</a>
+            <a 
+              className="waves-effect waves-light btn" 
+              href={process.env.NODE_ENV === 'production' 
+                ? '/auth/google'
+                : 'http://localhost:5000/auth/google'
+              }
+            >
+              Login With Google
+            </a>
           </li>
         );
       default:
@@ -19,32 +47,31 @@ class Header extends Component {
             <Link to="/blogs">My Blogs</Link>
           </li>,
           <li key="2">
-            <a href={'/auth/logout'}>Logout</a>
+            <a 
+              href="#"
+              onClick={handleLogout}
+            >
+              Logout 
+            </a> - {auth.displayName}
           </li>
         ];
     }
-  }
+  };
 
-  render() {
-    return (
-      <nav className="indigo">
-        <div className="nav-wrapper">
-          <Link
-            to={this.props.auth ? '/blogs' : '/'}
-            className="left brand-logo"
-            style={{ marginLeft: '10px' }}
-          >
-            Blogster
-          </Link>
-          <ul className="right">{this.renderContent()}</ul>
-        </div>
-      </nav>
-    );
-  }
-}
+  return (
+    <nav className="indigo">
+      <div className="nav-wrapper">
+        <Link
+          to={auth ? '/blogs' : '/'}
+          className="left brand-logo"
+          style={{ marginLeft: '10px' }}
+        >
+          Blogster
+        </Link>
+        <ul className="right">{renderContent()}</ul>
+      </div>
+    </nav>
+  );
+};
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps)(Header);
+export default Header;
