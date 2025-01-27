@@ -2,3 +2,10 @@ node_modules
 nohup.out
 .DS_Store
 config/dev.js
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
