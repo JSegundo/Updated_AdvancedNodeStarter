@@ -9,3 +9,5 @@ config/dev.js
 .env.development
 .env.test
 .env.production
+
+dump.rdb
