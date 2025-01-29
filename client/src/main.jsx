@@ -6,10 +6,6 @@ import App from './components/App'
 import './index.css'
 import reducers from './reducers'
 
-
-// If you have a rootReducer file, import it
-// import rootReducer from './reducers'
-
 // Create store with modern Redux Toolkit
 const store = configureStore({
   reducer: reducers,

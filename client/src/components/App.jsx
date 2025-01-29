@@ -18,17 +18,19 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <div className="min-h-screen bg-gray-50">
       <BrowserRouter>
         <div>
           <Header />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/blogs/new" element={<BlogNew />} />
-            <Route path="/blogs/:_id" element={<BlogShow />} />
-            <Route path="/blogs" element={<BlogList />} />
-          </Routes>
+          <main className="container mx-auto px-4 py-8">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/blogs/new" element={<BlogNew />} />
+              <Route path="/blogs/:_id" element={<BlogShow />} />
+              <Route path="/blogs" element={<BlogList />} />
+            </Routes>
+          </main>
         </div>
       </BrowserRouter>
     </div>

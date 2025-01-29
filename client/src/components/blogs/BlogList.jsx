@@ -15,22 +15,27 @@ function BlogList() {
   const renderBlogs = () => {
     return map(blogs, blog => {
       return (
-        <div className="card darken-1 horizontal" key={blog._id}>
-          <div className="card-stacked">
-            <div className="card-content">
-              <span className="card-title">{blog.title}</span>
-              <p>{blog.content}</p>
-            </div>
-            <div className="card-action">
-              <Link to={`/blogs/${blog._id}`}>Read</Link>
-            </div>
+        <div className="bg-white rounded-lg shadow-md mb-4 overflow-hidden" key={blog._id}>
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-2">{blog.title}</h2>
+            <p className="text-gray-600 mb-4">{blog.content}</p>
+            <Link 
+              to={`/blogs/${blog._id}`}
+              className="text-indigo-600 hover:text-indigo-800 font-semibold"
+            >
+              Read More →
+            </Link>
           </div>
         </div>
       );
     });
   };
 
-  return <div>{renderBlogs()}</div>;
+  return (
+    <div className="space-y-4">
+      {renderBlogs()}
+    </div>
+  );
 }
 
 export default BlogList;
